@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  neo4j:
+    image: neo4j:5
+    container_name: open-budget-api-neo4j
+    ports:
+      - "7474:7474" # HTTP
+      - "7687:7687" # Bolt
+    volumes:
+      - neo4j_data:/data
+    environment:
+      # Set the password for the neo4j user
+      - NEO4J_AUTH=neo4j/password
+
+volumes:
+  neo4j_data:
