@@ -17,40 +17,53 @@ A production-ready, open-source API for Philippine government budget transparenc
 - ✅ **REST API**: Clean, well-documented endpoints
 - ✅ **TypeScript**: Full type safety and IDE support
 
-## 🚀 Quick Start
+## 🚀 Quick Start (with Docker)
+
+This project includes a fully automated setup using Docker and a custom import script, which is the recommended way to get started.
 
 ### Prerequisites
 
+- **Docker** & **Docker Compose**
 - **Node.js** 20+
-- **Neo4j Database** 5.x with BetterGovPH budget data loaded
 - **Yarn** package manager
+- **Bash** (for the import script)
 
-> **Note**: The Neo4j database must be pre-populated with budget data from the [open-budget-data](https://github.com/bettergovph/open-budget-data) repository. See [Data Source](#-data-source) section below.
-
-### Installation
+### 1. Clone and Configure
 
 ```bash
 # Clone the repository
 git clone https://github.com/bettergovph/open-budget-api.git
 cd open-budget-api
 
-# Install dependencies
-yarn install
-
-# Configure environment
+# Create your environment file
 cp .env.example .env
-# Edit .env with your Neo4j credentials and configuration
+# The default .env values are pre-configured for the Docker setup.
 ```
 
-### Running the Application
+### 2. Start Database & Import Data
+
+This step will start a Neo4j container and then populate it with over 6.8 million budget records.
+
+```bash
+# Start the Neo4j database in the background
+docker-compose up -d
+
+# Make the import script executable
+chmod +x import-budget-data.sh
+
+# Run the import script
+# This will clone the data repository, convert files, and load them into Neo4j.
+# Note: This process will take several minutes to complete.
+./import-budget-data.sh
+```
+
+### 3. Run the Application
+
+Once the data import is complete, you can start the API server.
 
 ```bash
 # Development mode (with hot reload)
 yarn start:dev
-
-# Production mode
-yarn build
-yarn start:prod
 ```
 
 ### Access the API
@@ -280,15 +293,13 @@ The [open-budget-data](https://github.com/bettergovph/open-budget-data) reposito
 - UACS dimension mappings (departments, agencies, expense classifications, etc.)
 - Data validation and processing tools
 
-### Setting Up the Database
+### Setting Up the Database (Automated)
 
-To use this API, you need to first populate your Neo4j database with the budget data:
+The process of setting up the Neo4j database and importing the data is **fully automated**.
 
-1. Clone the [open-budget-data](https://github.com/bettergovph/open-budget-data) repository
-2. Follow the setup instructions to import data into Neo4j
-3. Configure this API to connect to your populated Neo4j instance
+The `docker-compose.yml` file starts a pre-configured Neo4j instance, and the `import-budget-data.sh` script handles the entire data pipeline, from cloning the source data to populating the database.
 
-See the [open-budget-data README](https://github.com/bettergovph/open-budget-data#readme) for detailed setup instructions.
+**Please follow the instructions in the [🚀 Quick Start](#-quick-start-with-docker) section for a one-time, automated setup.**
 
 ## 🛣️ Roadmap
 
